@@ -1,0 +1,265 @@
+﻿<Window x:Class="PesDuke.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:PesDuke.Converters"
+        Title="PesDuke"
+        Height="750" Width="550"
+        MinHeight="650" MinWidth="480"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="CanResizeWithGrip">
+
+    <Window.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVis" />
+        <conv:BoolToSpeakingBgConverter x:Key="BoolToSpeakingBg" />
+    </Window.Resources>
+
+    <Border CornerRadius="8"
+            Background="{StaticResource PrimaryBackgroundBrush}"
+            BorderBrush="{StaticResource AccentBlueBrush}"
+            BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36" />   <!-- Title bar -->
+                <RowDefinition Height="Auto" />  <!-- URL input -->
+                <RowDefinition Height="Auto" />  <!-- Controls -->
+                <RowDefinition Height="*" />     <!-- Chat -->
+                <RowDefinition Height="Auto" />  <!-- Settings -->
+                <RowDefinition Height="28" />    <!-- Status bar -->
+            </Grid.RowDefinitions>
+
+            <!-- ═══════════════ TITLE BAR ═══════════════ -->
+            <Border Grid.Row="0"
+                    Background="{StaticResource SecondaryBackgroundBrush}"
+                    CornerRadius="8,8,0,0"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid Margin="12,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="🐕" FontSize="16" VerticalAlignment="Center" />
+                        <TextBlock Text=" PesDuke" FontSize="13" FontWeight="Bold"
+                                   Foreground="{StaticResource AccentYellowBrush}" VerticalAlignment="Center" />
+                        <TextBlock Text=" v1.0" FontSize="10"
+                                   Foreground="{StaticResource SecondaryTextBrush}" VerticalAlignment="Center" Margin="4,0,0,0" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Content="⚙" Style="{StaticResource PesDukeButtonPrimary}"
+                                Width="28" Height="24" FontSize="13" Padding="0"
+                                Margin="0,0,4,0" Click="BtnSettings_Click" />
+                        <Button Content="—" Style="{StaticResource PesDukeButtonPrimary}"
+                                Width="28" Height="24" FontSize="13" Padding="0"
+                                Margin="0,0,4,0" Click="BtnMinimize_Click" />
+                        <Button Content="✕" Style="{StaticResource PesDukeButtonDanger}"
+                                Width="28" Height="24" FontSize="13" Padding="0"
+                                Click="BtnClose_Click" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ═══════════════ URL INPUT ═══════════════ -->
+            <Border Grid.Row="1" Margin="14,10,14,6"
+                    Background="{StaticResource TertiaryBackgroundBrush}"
+                    CornerRadius="8" Padding="12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="4" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="🔗 YouTube Live Stream URL"
+                               Foreground="{StaticResource SecondaryTextBrush}"
+                               FontSize="11" Margin="0,0,0,4" />
+                    <TextBox x:Name="TxtStreamUrl" Grid.Row="2"
+                             Style="{StaticResource PesDukeTextBox}"
+                             Text="https://youtube.com/live/..."
+                             GotFocus="TxtStreamUrl_GotFocus"
+                             LostFocus="TxtStreamUrl_LostFocus" />
+                </Grid>
+            </Border>
+
+            <!-- ═══════════════ CONTROL BUTTONS ═══════════════ -->
+            <Border Grid.Row="2" Margin="14,2,14,6"
+                    Background="{StaticResource TertiaryBackgroundBrush}"
+                    CornerRadius="8" Padding="12,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="BtnStart" Grid.Column="0"
+                            Content="▶ Start" Style="{StaticResource PesDukeButtonAccent}"
+                            Click="BtnStart_Click" />
+                    <Button x:Name="BtnPause" Grid.Column="2"
+                            Content="⏸ Pause" Style="{StaticResource PesDukeButtonPrimary}"
+                            IsEnabled="False" Click="BtnPause_Click" />
+                    <Button x:Name="BtnStop" Grid.Column="4"
+                            Content="⏹ Stop" Style="{StaticResource PesDukeButtonDanger}"
+                            IsEnabled="False" Click="BtnStop_Click" />
+                </Grid>
+            </Border>
+
+            <!-- ═══════════════ CHAT PANEL ═══════════════ -->
+            <Border Grid.Row="3" Margin="14,2,14,6"
+                    Background="{StaticResource TertiaryBackgroundBrush}"
+                    CornerRadius="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Chat Header -->
+                    <Border Grid.Row="0" Padding="12,8" BorderBrush="{StaticResource AccentBlueBrush}"
+                            BorderThickness="0,0,0,1">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="💬 Live Chat"
+                                           Foreground="{StaticResource PrimaryTextBrush}"
+                                           FontSize="13" FontWeight="SemiBold" />
+                            </StackPanel>
+                            <TextBlock x:Name="TxtMessageCount" HorizontalAlignment="Right"
+                                       Foreground="{StaticResource SecondaryTextBrush}"
+                                       FontSize="11" VerticalAlignment="Center" />
+                        </Grid>
+                    </Border>
+
+                    <!-- Chat Messages -->
+                    <ListBox x:Name="ChatListBox" Grid.Row="1"
+                             ItemContainerStyle="{StaticResource ChatListBoxItem}"
+                             Background="Transparent" BorderThickness="0"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             Padding="4,4">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding IsCurrentlySpeaking, Converter={StaticResource BoolToSpeakingBg}}"
+                                        CornerRadius="4" Padding="8,6" Margin="2,1">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="2" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Timestamp, StringFormat='HH:mm'}"
+                                                       Foreground="{StaticResource SecondaryTextBrush}"
+                                                       FontSize="10" VerticalAlignment="Center" Margin="0,0,6,0" />
+                                            <TextBlock Text="{Binding Author}"
+                                                       Foreground="{StaticResource AccentYellowBrush}"
+                                                       FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <TextBlock Grid.Row="2" Text="{Binding Text}"
+                                                   Foreground="{StaticResource PrimaryTextBrush}"
+                                                   FontSize="12" TextWrapping="Wrap" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <!-- Empty State -->
+                    <StackPanel x:Name="EmptyState" Grid.Row="1"
+                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="🐕" FontSize="48" HorizontalAlignment="Center" />
+                        <TextBlock Text="Paste a YouTube live URL and click Start to begin"
+                                   Foreground="{StaticResource SecondaryTextBrush}"
+                                   FontSize="12" HorizontalAlignment="Center"
+                                   TextAlignment="Center" Margin="0,8,0,0" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ═══════════════ SETTINGS PANEL ═══════════════ -->
+            <Border x:Name="SettingsPanel" Grid.Row="4" Margin="14,2,14,6"
+                    Background="{StaticResource TertiaryBackgroundBrush}"
+                    CornerRadius="8" Padding="12"
+                    Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock Text="⚙ Settings" Foreground="{StaticResource AccentYellowBrush}"
+                               FontSize="13" FontWeight="SemiBold" Margin="0,0,0,10" />
+
+                    <!-- API Key -->
+                    <TextBlock Text="YouTube API Key" Foreground="{StaticResource SecondaryTextBrush}"
+                               FontSize="11" Margin="0,0,0,4" />
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="TxtApiKey" Grid.Column="0"
+                                 Style="{StaticResource PesDukeTextBox}" />
+                        <Button x:Name="BtnSaveApiKey" Grid.Column="2"
+                                Content="Save" Style="{StaticResource PesDukeButtonPrimary}"
+                                Padding="12,6" />
+                    </Grid>
+
+                    <!-- Voice Selector -->
+                    <TextBlock Text="Voice" Foreground="{StaticResource SecondaryTextBrush}"
+                               FontSize="11" Margin="0,0,0,4" />
+                    <ComboBox x:Name="CmbVoice" Grid.Column="0"
+                              Style="{StaticResource PesDukeComboBox}"
+                              Margin="0,0,0,10" />
+
+                    <!-- Speech Rate -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="60" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="Speech Rate" Foreground="{StaticResource SecondaryTextBrush}"
+                                       FontSize="11" Margin="0,0,0,4" />
+                            <Slider x:Name="SliderSpeechRate"
+                                    Style="{StaticResource PesDukeSlider}"
+                                    Minimum="0.1" Maximum="3.0" Value="1.0"
+                                    TickFrequency="0.1" IsSnapToTickEnabled="True" />
+                        </StackPanel>
+                        <TextBlock x:Name="TxtSpeechRate" Grid.Column="1"
+                                   Text="1.0x" Foreground="{StaticResource AccentYellowBrush}"
+                                   FontSize="12" FontWeight="SemiBold"
+                                   HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                                   Margin="0,0,0,8" />
+                    </Grid>
+
+                    <!-- Auto-start -->
+                    <CheckBox x:Name="ChkAutoStart" Content="Auto-start on launch"
+                              Foreground="{StaticResource PrimaryTextBrush}"
+                              FontSize="12" Margin="0,0,0,6" />
+
+                    <!-- Minimize to tray -->
+                    <CheckBox x:Name="ChkMinimizeToTray" Content="Minimize to tray"
+                              Foreground="{StaticResource PrimaryTextBrush}"
+                              FontSize="12" IsChecked="True" />
+                </StackPanel>
+            </Border>
+
+            <!-- ═══════════════ STATUS BAR ═══════════════ -->
+            <Border Grid.Row="5"
+                    Background="{StaticResource SecondaryBackgroundBrush}"
+                    CornerRadius="0,0,8,8" Padding="12,4">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Ellipse x:Name="StatusDot" Width="8" Height="8"
+                                 Fill="{StaticResource ErrorRedBrush}" Margin="0,0,6,0" />
+                        <TextBlock x:Name="TxtStatus" Text="Disconnected"
+                                   Foreground="{StaticResource SecondaryTextBrush}"
+                                   FontSize="11" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <TextBlock Text="Messages: " Foreground="{StaticResource SecondaryTextBrush}"
+                                   FontSize="11" VerticalAlignment="Center" />
+                        <TextBlock x:Name="TxtStatusCount" Text="0"
+                                   Foreground="{StaticResource AccentYellowBrush}"
+                                   FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        <TextBlock Text="  |  v1.0" Foreground="{StaticResource SecondaryTextBrush}"
+                                   FontSize="10" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
