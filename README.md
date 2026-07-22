@@ -1,5 +1,10 @@
 # 🐕 PesDuke
 
+[![GitHub release](https://img.shields.io/github/v/release/fanteamua/PesDuke?color=FFD700&style=flat-square)](https://github.com/fanteamua/PesDuke/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-0057B7?style=flat-square)](LICENSE)
+[![.NET 8.0](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/download/dotnet/8.0)
+[![Windows](https://img.shields.io/badge/Windows-10%2F11-0078D4?style=flat-square&logo=windows)](https://www.microsoft.com/windows)
+
 **YouTube Live Chat → Speech (TTS) reader for streamers**
 
 PesDuke reads your YouTube live chat messages aloud using text-to-speech. Paste a live stream URL, click Start, and your chat is read in real time — perfect for streamers who want to interact with chat without looking at the screen.
